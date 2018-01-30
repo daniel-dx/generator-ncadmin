@@ -36,19 +36,21 @@ module.exports = yeoman.Base.extend({
   },
 
   checkModule() {
-    if(fs.existsSync(this.props.modulePath)){
+    if (fs.existsSync(this.props.modulePath)) {
       throw new Error(`Module:${this.props.midLineName} is already exist.`);
     }
   },
 
   createDir() {
     const mkdirCommon = [
-      `mkdir ./src/modules/${this.props.midLineName}`,
-      `mkdir ./src/modules/${this.props.midLineName}/components`,
-      `mkdir ./src/modules/${this.props.midLineName}/pages`,
-      `mkdir ./src/modules/${this.props.midLineName}/modals`
+      `./src/modules/${this.props.midLineName}`,
+      `./src/modules/${this.props.midLineName}/components`,
+      `./src/modules/${this.props.midLineName}/pages`,
+      `./src/modules/${this.props.midLineName}/modals`
     ];
-    return utils.exec(mkdirCommon.join(' && '));
+    mkdirCommon.forEach(function (item) {
+      fs.mkdirSync(item);
+    })
   },
 
   copyTemplates() {
