@@ -8,6 +8,7 @@ var yeoman = require('yeoman-generator');
 
 var logger = require('../app/logger');
 var utils = require('../app/utils');
+var fs = require('fs');
 
 var scrFolderPath, scrFolder;
 
@@ -24,7 +25,6 @@ module.exports = yeoman.Base.extend({
 
     return this.prompt(prompts).then(props => {
       this.props = props;
-
       // 中划线name
       this.props.midLineName = s(this.props.name).underscored().slugify().value();
       // 驼峰name
@@ -33,6 +33,12 @@ module.exports = yeoman.Base.extend({
       this.props.modulePath = `./src/modules/${this.props.midLineName}`;
     });
 
+  },
+
+  checkModule() {
+    if(fs.existsSync(this.props.modulePath)){
+      throw new Error(`Module:${this.props.midLineName} is already exist.`);
+    }
   },
 
   createDir() {
@@ -50,6 +56,26 @@ module.exports = yeoman.Base.extend({
       this.templatePath('comp-index.js'),
       this.destinationPath(path.join(this.props.modulePath, 'comp-index.js'))
     );
+  },
+
+  updateNav() {
+    var fullPath = './src/common/components/layout-nav.vue';
+
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: "<!-- Don't touch me - modules-->",
+      splicable: [
+        `{`,
+        `  type: "submenu",`,
+        `  icon: "el-icon-success",`,
+        `  name: "Demo",`,
+        `  itemList: [`,
+        `    // <!-- Don't touch me - ${this.props.midLineName} pages -->`,
+        `  ]`,
+        `},`,
+      ]
+    });
   },
 
   usageTip() {
