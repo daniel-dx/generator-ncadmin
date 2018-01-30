@@ -14,67 +14,47 @@ var scrFolderPath, scrFolder;
 module.exports = yeoman.Base.extend({
 
   prompting() {
+    // 询问信息
+    var prompts = [{
+      type: 'string',
+      name: 'name',
+      message: 'Input your module name.(Use \'-\' to connect words.)',
+      default: `module-${new Date().getTime()}`
+    }];
 
-    // var prompts = [{
-    //   type: 'string',
-    //   name: 'name',
-    //   message: 'Would you like to enable this option?',
-    //   default: 'name'
-    // }];
+    return this.prompt(prompts).then(props => {
+      this.props = props;
 
-    // return this.prompt(prompts).then(props => {
-    //   // To access props later use this.props.someAnswer;
-    //   this.props = props;
+      // 中划线name
+      this.props.midLineName = s(this.props.name).underscored().slugify().value();
+      // 驼峰name
+      this.props.camelName = s(this.props.midLineName).camelize().value();
+      // 模块路径
+      this.props.modulePath = `./src/modules/${this.props.midLineName}`;
+    });
 
-    //   // example: name = demo-user
-    //   this.props.componentName = s(this.props.name).underscored().slugify().value(); // => demo-user
-    //   this.props.camelComponentName = s(this.props.componentName).camelize().value(); // => demoUser
-    //   this.props.firstCapCamelComponentName = s(this.props.camelComponentName).capitalize().value(); // => DemoUser
+  },
 
-    //   scrFolder = 'src/components/' + this.props.componentName;
-    //   scrFolderPath = './' + scrFolder + '/';
-
-    // });
-
+  createDir() {
+    const mkdirCommon = [
+      `mkdir ./src/modules/${this.props.midLineName}`,
+      `mkdir ./src/modules/${this.props.midLineName}/components`,
+      `mkdir ./src/modules/${this.props.midLineName}/pages`,
+      `mkdir ./src/modules/${this.props.midLineName}/modals`
+    ];
+    return utils.exec(mkdirCommon.join(' && '));
   },
 
   copyTemplates() {
-
-    // var done = this.async();
-
-    // glob(this.templatePath() + "/**/*.*", {}, (er, files) => {
-    //   _.each(files, filePath => {
-    //     var toFileName = path.parse(filePath).base;
-    //     this.fs.copyTpl(
-    //       filePath,
-    //       path.resolve(scrFolderPath, toFileName),
-    //       this.props
-    //     );
-    //   });
-
-    //   done();
-    // });
-
-  },
-
-  updateContent() {
-
-    // var fullPath = 'src/components/App.vue';
-    // utils.rewriteFile({
-    //   fileRelativePath      : fullPath,
-    //   insertPrev: true,
-    //   needle    : "<!-- Don't touch me -->",
-    //   splicable : [
-    //     `<${this.componentName}></${this.componentName}>`
-    //   ]
-    // });
-
+    return this.fs.copyTpl(
+      this.templatePath('comp-index.js'),
+      this.destinationPath(path.join(this.props.modulePath, 'comp-index.js'))
+    );
   },
 
   usageTip() {
     logger.log('=========================');
     logger.log('Congratulations, completed successfully!');
-    logger.log("Gook Luck!");
     logger.log('=========================');
   }
 
