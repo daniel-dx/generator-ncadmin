@@ -5,6 +5,7 @@ var glob = require("glob");
 var path = require('path');
 var s = require('underscore.string');
 var yeoman = require('yeoman-generator');
+var chalk = require('chalk');
 
 var logger = require('../app/logger');
 var utils = require('../app/utils');
@@ -83,9 +84,10 @@ module.exports = yeoman.Base.extend({
   },
 
   usageTip() {
-    logger.log('=========================');
-    logger.log('Congratulations, completed successfully!');
-    logger.log('=========================');
+    logger.green('=========================');
+    logger.green('Congratulations, completed successfully!');
+    logger.green('=========================');
+    logger.log(`   ${chalk.yellow('modify')} src/common/components/layout-nav.vue`)
   }
 
 });
