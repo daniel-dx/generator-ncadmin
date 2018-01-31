@@ -5,77 +5,105 @@ var glob = require("glob");
 var path = require('path');
 var s = require('underscore.string');
 var yeoman = require('yeoman-generator');
+var chalk = require('chalk');
 
 var logger = require('../app/logger');
 var utils = require('../app/utils');
+var fs = require('fs');
 
-var scrFolderPath, scrFolder;
-
+/**
+ * add-component 生成器行为：
+ * 1. 在 src/modules 对应模块的 components 目录中添加页面文件 xx.vue
+ * 2. 在 src/modules 对应模块的 comp-index.js 目录中添加组件
+ */
 module.exports = yeoman.Base.extend({
 
   prompting() {
+    const moduleList = fs.readdirSync('src/modules').filter(function (item) {
+      return item.indexOf('.') == -1;
+    }).map(function (item) {
+      return {
+        name: item,
+        value: item
+      }
+    })
 
-    // var prompts = [{
-    //   type: 'string',
-    //   name: 'name',
-    //   message: 'Would you like to enable this option?',
-    //   default: 'name'
-    // }];
+    // 询问信息
+    var prompts = [
+      {
+        type: 'list',
+        name: 'moduleName',
+        message: 'Chose the module.',
+        choices: moduleList,
+        default: moduleList[0].value
+      },
+      {
+        type: 'string',
+        name: 'name',
+        message: 'Input the component name.(Use \'-\' to connect words.)',
+        default: `component-${new Date().getTime()}`
+      }
+    ];
 
-    // return this.prompt(prompts).then(props => {
-    //   // To access props later use this.props.someAnswer;
-    //   this.props = props;
+    return this.prompt(prompts).then(props => {
+      this.props = props;
+      // 中划线name
+      this.props.midLineName = s(this.props.name).underscored().slugify().value();
+      // 驼峰name
+      this.props.camelName = s(this.props.midLineName).camelize().value();
+      // 首字母大写驼峰
+      this.props.firstCapCamelComponentName = s(this.props.camelName).capitalize().value(); // => DemoUser
+      // 模块路径
+      this.props.modulePath = `./src/modules/${this.props.moduleName}`;
+    });
 
-    //   // example: name = demo-user
-    //   this.props.componentName = s(this.props.name).underscored().slugify().value(); // => demo-user
-    //   this.props.camelComponentName = s(this.props.componentName).camelize().value(); // => demoUser
-    //   this.props.firstCapCamelComponentName = s(this.props.camelComponentName).capitalize().value(); // => DemoUser
+  },
 
-    //   scrFolder = 'src/components/' + this.props.componentName;
-    //   scrFolderPath = './' + scrFolder + '/';
-
-    // });
-
+  checkPage() {
+    this.props.componentPath = path.join(this.props.modulePath, 'components', this.props.midLineName + '.vue');
+    if (fs.existsSync(this.props.componentPath)) {
+      throw new Error(`Page:${this.props.componentPath} is already exist.`);
+    }
   },
 
   copyTemplates() {
-
-    // var done = this.async();
-
-    // glob(this.templatePath() + "/**/*.*", {}, (er, files) => {
-    //   _.each(files, filePath => {
-    //     var toFileName = path.parse(filePath).base;
-    //     this.fs.copyTpl(
-    //       filePath,
-    //       path.resolve(scrFolderPath, toFileName),
-    //       this.props
-    //     );
-    //   });
-
-    //   done();
-    // });
-
+    return this.fs.copyTpl(
+      this.templatePath('component.vue'),
+      this.destinationPath(this.props.componentPath),
+      {
+        midLineName: this.props.midLineName
+      }
+    );
   },
 
-  updateContent() {
 
-    // var fullPath = 'src/components/App.vue';
-    // utils.rewriteFile({
-    //   fileRelativePath      : fullPath,
-    //   insertPrev: true,
-    //   needle    : "<!-- Don't touch me -->",
-    //   splicable : [
-    //     `<${this.componentName}></${this.componentName}>`
-    //   ]
-    // });
 
+  updateCompIndex() {
+    var fullPath = `./src/modules/${this.props.moduleName}/comp-index.js`;
+
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: `<!-- Don't touch me - import components-->`,
+      splicable: [
+        `import ${this.props.camelName} from './components/${this.props.midLineName}.vue';`,
+      ]
+    });
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: `<!-- Don't touch me - export components-->`,
+      splicable: [
+        `'${this.props.moduleName}.components.${this.props.midLineName}': ${this.props.camelName},`,
+      ]
+    });
   },
 
   usageTip() {
-    logger.log('=========================');
-    logger.log('Congratulations, completed successfully!');
-    logger.log("Gook Luck!");
-    logger.log('=========================');
+    logger.green('=========================');
+    logger.green('Congratulations, completed successfully!');
+    logger.green('=========================');
+    logger.log(`   ${chalk.yellow('modify')} src/modules/${this.props.moduleName}/comp-index.js`);
   }
 
 });

@@ -3,18 +3,14 @@
  */
 import Vue from 'vue';
 
-// import preview from './modals/preview.vue';
 // <!-- Don't touch me - import modals-->
 
-// import previewButton from './components/preview-button.vue';
 // <!-- Don't touch me - import components-->
 
 // 注意：只有组件想通过配置使用才需要在此处声明
 let exportIdx = {
-    // 'my-page.modals.preview': preview,
     // <!-- Don't touch me - export modals-->
 
-    // 'my-page.components.preview-button': previewButton,
     // <!-- Don't touch me - export components-->
 }
 
