@@ -1,6 +1,6 @@
 <template>
   <div class="<%= midLineName %>">
-
+    <%= midLineName %>
   </div>
 </template>
 
