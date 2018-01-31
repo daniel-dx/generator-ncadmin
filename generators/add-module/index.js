@@ -20,7 +20,7 @@ module.exports = yeoman.Base.extend({
     var prompts = [{
       type: 'string',
       name: 'name',
-      message: 'Input your module name.(Use \'-\' to connect words.)',
+      message: 'Input the module name.(Use \'-\' to connect words.)',
       default: `module-${new Date().getTime()}`
     }];
 
@@ -73,7 +73,7 @@ module.exports = yeoman.Base.extend({
       splicable: [
         `{`,
         `  type: "submenu",`,
-        `  icon: "el-icon-success",`,
+        `  icon: "el-icon-menu",`,
         `  name: "${this.props.firstCapCamelComponentName}",`,
         `  itemList: [`,
         `    // <!-- Don't touch me - ${this.props.midLineName} pages -->`,
@@ -83,10 +83,36 @@ module.exports = yeoman.Base.extend({
     });
   },
 
+  updateRoute() {
+    var fullPath = './src/routes/index.js';
+
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: "<!-- Don't touch me - import modules -->",
+      splicable: [
+        `// <!-- Don't touch me - import ${this.props.midLineName} -->`,
+        ``,
+      ]
+    });
+
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: "<!-- Don't touch me - export modules -->",
+      splicable: [
+        `// <!-- Don't touch me - export ${this.props.midLineName} -->`,
+        ``,
+      ]
+    });
+
+  },
+
   usageTip() {
     logger.green('=========================');
     logger.green('Congratulations, completed successfully!');
     logger.green('=========================');
+    logger.log(`   ${chalk.yellow('modify')} src/routes/index.js`)
     logger.log(`   ${chalk.yellow('modify')} src/common/components/layout-nav.vue`)
   }
 
