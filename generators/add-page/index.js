@@ -11,8 +11,12 @@ var logger = require('../app/logger');
 var utils = require('../app/utils');
 var fs = require('fs');
 
-var scrFolderPath, scrFolder;
-
+/**
+ * add-page 生成器行为：
+ * 1. 在 src/modules 对应模块的 pages 目录中添加页面文件 xx.vue
+ * 2. 更新路由 src/routes/index.js，添加对应页面路由
+ * 3. 更新导航 src/common/components/layout-nav.vue，添加对应导航
+ */
 module.exports = yeoman.Base.extend({
 
   prompting() {

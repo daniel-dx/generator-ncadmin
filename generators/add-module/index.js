@@ -13,6 +13,13 @@ var fs = require('fs');
 
 var scrFolderPath, scrFolder;
 
+/**
+ * add-page 生成器行为：
+ * 1. 在 src/modules 中添加对应模块目录，包含 component/modals/pages 以及 comp-index.js
+ * 2. 更新路由 src/routes/index.js，增加标识位
+ * 3. 更新导航 src/common/components/layout-nav.vue，添加对应菜单及标识位
+ * 4. 更新入口组件 src/app.vue，引入模块对应的comp-index.js
+ */
 module.exports = yeoman.Base.extend({
 
   prompting() {
@@ -53,6 +60,7 @@ module.exports = yeoman.Base.extend({
     ];
     mkdirCommon.forEach(function (item) {
       fs.mkdirSync(item);
+      fs.appendFileSync(`${item}/README.md`,'');
     })
   },
 
@@ -108,12 +116,26 @@ module.exports = yeoman.Base.extend({
 
   },
 
+  updateApp() {    
+    var fullPath = './src/app.vue';
+
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: "<!-- Don't touch me - import comp-index -->",
+      splicable: [
+        `import "modules/${this.props.midLineName}/comp-index.js";`,
+      ]
+    });
+  },
+
   usageTip() {
     logger.green('=========================');
     logger.green('Congratulations, completed successfully!');
     logger.green('=========================');
     logger.log(`   ${chalk.yellow('modify')} src/routes/index.js`)
     logger.log(`   ${chalk.yellow('modify')} src/common/components/layout-nav.vue`)
+    logger.log(`   ${chalk.yellow('modify')} src/app.vue`)
   }
 
 });
