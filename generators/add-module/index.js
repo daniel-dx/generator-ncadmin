@@ -29,6 +29,8 @@ module.exports = yeoman.Base.extend({
       this.props.midLineName = s(this.props.name).underscored().slugify().value();
       // 驼峰name
       this.props.camelName = s(this.props.midLineName).camelize().value();
+      // 首字母大写驼峰
+      this.props.firstCapCamelComponentName = s(this.props.camelName).capitalize().value(); // => DemoUser
       // 模块路径
       this.props.modulePath = `./src/modules/${this.props.midLineName}`;
     });
@@ -71,7 +73,7 @@ module.exports = yeoman.Base.extend({
         `{`,
         `  type: "submenu",`,
         `  icon: "el-icon-success",`,
-        `  name: "Demo",`,
+        `  name: "${this.props.firstCapCamelComponentName}",`,
         `  itemList: [`,
         `    // <!-- Don't touch me - ${this.props.midLineName} pages -->`,
         `  ]`,
