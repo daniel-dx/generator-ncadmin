@@ -36,6 +36,16 @@ module.exports = yeoman.Base.extend({
         default: moduleList[0].value
       },
       {
+        type: 'list',
+        name: 'modalType',
+        message: 'Chose the type of page.',
+        choices: ['empty', 'edit', 'detail'].map(item => ({
+          name: item,
+          value: item
+        })),
+        default: 'empty'
+      },
+      {
         type: 'string',
         name: 'name',
         message: 'Input the modal name.(Use \'-\' to connect words.)',
@@ -66,7 +76,7 @@ module.exports = yeoman.Base.extend({
 
   copyTemplates() {
     return this.fs.copyTpl(
-      this.templatePath('modal.vue'),
+      this.templatePath(`${this.props.modalType}.vue`),
       this.destinationPath(this.props.modalPath),
       {
         midLineName: this.props.midLineName
