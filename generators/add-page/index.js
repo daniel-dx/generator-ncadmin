@@ -109,6 +109,13 @@ module.exports = yeoman.Base.extend({
 
   updateNav() {
     var fullPath = './src/common/components/layout-nav.vue';
+    
+    if(this.props.pageType == 'edit' || this.props.pageType == 'detail' ){
+      var routeLink = `  link: "/${this.props.moduleName}/${this.props.midLineName}/100"`;
+    }else{
+      var routeLink = `  link: "/${this.props.moduleName}/${this.props.midLineName}"`;
+    }
+
 
     utils.rewriteFile({
       fileRelativePath: fullPath,
@@ -118,7 +125,7 @@ module.exports = yeoman.Base.extend({
         `{`,
         `  icon: "",`,
         `  name: "${this.props.firstCapCamelComponentName}",`,
-        `  link: "/${this.props.moduleName}/${this.props.midLineName}"`,
+        routeLink,
         `},`,
       ]
     });
@@ -138,12 +145,19 @@ module.exports = yeoman.Base.extend({
         `import ${camelModulePage} from 'modules/${this.props.moduleName}/pages/${this.props.midLineName}.vue';`,
       ]
     });
+
+    if(this.props.pageType == 'edit' || this.props.pageType == 'detail' ){
+      var routeContent = `{ path: '/${this.props.moduleName}/${this.props.midLineName}/:id', component: ${camelModulePage}, name: '${midLineModulePage}' },`;
+    }else{
+      var routeContent = `{ path: '/${this.props.moduleName}/${this.props.midLineName}', component: ${camelModulePage}, name: '${midLineModulePage}' },`
+    }
+
     utils.rewriteFile({
       fileRelativePath: fullPath,
       insertPrev: true,
       needle: `<!-- Don't touch me - export ${this.props.moduleName} -->`,
       splicable: [
-        `{ path: '/${this.props.moduleName}/${this.props.midLineName}', component: ${camelModulePage}, name: '${midLineModulePage}' },`,
+        routeContent,
       ]
     });
   },
