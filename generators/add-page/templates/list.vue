@@ -25,7 +25,8 @@ export default {
               keyword: {
                 type: 'string',
                 ui: {
-                  label: '关键字'
+                  label: '关键字',
+                  columns: 3
                 }
               }
             },
@@ -44,6 +45,16 @@ export default {
           batchActions: {
             delete: {
               handler: {
+                type: "ajax",
+                options: {
+                  apiUrl: '/api/deleteItem',
+                  method: 'post',
+                  params: [{
+                    name: 'id',
+                    value: 'dx: {{$selected[e].id}}'
+                  }],
+                },
+                refresh: 'current'
               }
             },
             others: [
@@ -64,7 +75,7 @@ export default {
         // 显示列表
         list: {
           datasource: {
-            apiUrl: '',
+            apiUrl: '/api/getListData',
             method: 'get',
             paramFields: {
               pageSize: 'pageSize',
@@ -74,8 +85,8 @@ export default {
             otherParams: {
             },
             resField: {
-              pageingTotal: '',
-              list: ''
+              pageingTotal: 'page.total',
+              list: 'data'
             },
           },
 
@@ -89,14 +100,14 @@ export default {
           columns: [
             {
               header: '列1',
-              dataField: 'field1',
+              dataField: 'name',
             },
             {
               header: '列2',
               component: {
                 name: 'nca-label',
                 config: {},
-                value: '列2的值'
+                value: 'dx: {{$item.address}}'
               }
             },
           ],
@@ -107,7 +118,7 @@ export default {
               handler: {
                 type: "ajax",
                 options: {
-                  apiUrl: '',
+                  apiUrl: '/api/deleteItem',
                   method: 'post',
                   params: [{
                     name: 'id',
