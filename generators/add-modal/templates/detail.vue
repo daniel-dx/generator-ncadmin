@@ -1,55 +1,41 @@
 <template>
   <div class="<%= midLineName %>">
-    <%= midLineName %>
+      <nca-detail-modal-inside :modal-id="modalId" :config="configData" :value="value"></nca-detail-modal-inside>
   </div>
 </template>
 
 <script>
-import ncAdminCore from 'ncadmin-core'
-const eventHub = ncAdminCore.eventHub;
-const { ncformUtils } = ncAdminCore.ncformCommon;
+
+import ncAdminCore from 'ncadmin-core';
+const { modalInsideMixin } = ncAdminCore;
 
 export default {
-  components: {},
-  props: {
-    config: {
-      type: Object,
-      default: () => ({})
-    },
-    value: {
-      type: Object,
-      default: () => ({})
-    },
-    // 与弹窗通信的事件名。由弹窗随机生成。
-    modalId: {
-      type: String
-    }
-  },
-  created() {
-    // 统一监听事件，通过eventName区分事件。
-    // `fromModal_${this.modalId}` 为modal触发的事件。
-    // `toModal_${this.modalId}` 为modal接收的事件。
-    eventHub.$on(`fromModal_${this.modalId}`, config => {
-      switch (config.eventName) {
-        case "modalConfirm":
-          break;
-      }
-    });
-  },
+
+  mixins: [modalInsideMixins],
+
+  /* ====================== 数据绑定 ====================== */
+
   data() {
-    return {};
+    return {
+
+      configData: {
+        idField: 'id',
+        source: {
+          isRemote: false
+        },
+        detail: {
+          properties: [
+            // TODO: 这里配置你的详情信息
+          ]
+        }
+      }
+
+    };
   },
-  computed: {},
-  destroyed() {
-    eventHub.$off(`fromModal_${this.modalId}`);
-  },
-  methods: {},
-  watch: {}
+
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-.<%= midLineName %> {
-
-}
+<style lang="scss">
+.<%=midLineName %> {}
 </style>

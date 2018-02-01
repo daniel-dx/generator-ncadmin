@@ -17,8 +17,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss">
 .<%= midLineName %>{
 
 }
