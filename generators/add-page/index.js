@@ -37,6 +37,16 @@ module.exports = yeoman.Base.extend({
         default: moduleList[0].value
       },
       {
+        type: 'list',
+        name: 'pageType',
+        message: 'Chose the type of page.',
+        choices: ['empty','list','edit','detail'].map(item => ({
+          name: item,
+          value: item
+        })),
+        default: 'empty'
+      },
+      {
         type: 'string',
         name: 'name',
         message: 'Input the page name.(Use \'-\' to connect words.)',
@@ -52,6 +62,9 @@ module.exports = yeoman.Base.extend({
       this.props.camelName = s(this.props.midLineName).camelize().value();
       // 首字母大写驼峰
       this.props.firstCapCamelComponentName = s(this.props.camelName).capitalize().value(); // => DemoUser
+      
+      // 驼峰模块名
+      this.props.moduleCamelName = s(this.props.moduleName).camelize().value();
       // 模块路径
       this.props.modulePath = `./src/modules/${this.props.moduleName}`;
     });
@@ -67,12 +80,29 @@ module.exports = yeoman.Base.extend({
 
   copyTemplates() {
     return this.fs.copyTpl(
-      this.templatePath('page.vue'),
+      this.templatePath(`${this.props.pageType}.vue`),
       this.destinationPath(this.props.pagePath),
       {
-        midLineName: this.props.midLineName
+        midLineName: this.props.midLineName,
+        camelName: this.props.camelName,
+        moduleCamelName: this.props.moduleCamelName
       }
     );
+  },
+
+  updateStore() {
+    if(this.props.pageType == 'list'){
+      var fullPath = `./src/modules/${this.props.moduleName}/store/index.js`;
+
+      utils.rewriteFile({
+        fileRelativePath: fullPath,
+        insertPrev: true,
+        needle: `<!-- Don't touch me - import state -->`,
+        splicable: [
+          `${this.props.camelName}Value`
+        ]
+      });
+    }
   },
 
   updateNav() {

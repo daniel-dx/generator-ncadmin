@@ -56,7 +56,8 @@ module.exports = yeoman.Base.extend({
       `./src/modules/${this.props.midLineName}`,
       `./src/modules/${this.props.midLineName}/components`,
       `./src/modules/${this.props.midLineName}/pages`,
-      `./src/modules/${this.props.midLineName}/modals`
+      `./src/modules/${this.props.midLineName}/modals`,
+      `./src/modules/${this.props.midLineName}/store`,
     ];
     mkdirCommon.forEach(item => {
       fs.mkdirSync(item);
@@ -69,6 +70,35 @@ module.exports = yeoman.Base.extend({
       this.templatePath('comp-index.js'),
       this.destinationPath(path.join(this.props.modulePath, 'comp-index.js'))
     );
+  },  
+
+  copyStore() {
+    return this.fs.copyTpl(
+      this.templatePath('store.js'),
+      this.destinationPath(path.join(this.props.modulePath, 'store', 'index.js'))
+    );
+  },
+
+  updateStore() {
+    var fullPath = './src/store/index.js';
+
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: "<!-- Don't touch me - import store-->",
+      splicable: [
+        `import ${this.props.camelName} from 'modules/${this.props.midLineName}/store/index.js';`,
+      ]
+    });
+
+    utils.rewriteFile({
+      fileRelativePath: fullPath,
+      insertPrev: true,
+      needle: "<!-- Don't touch me - export store-->",
+      splicable: [
+        `${this.props.camelName},`,
+      ]
+    });
   },
 
   updateNav() {
@@ -133,9 +163,6 @@ module.exports = yeoman.Base.extend({
     logger.green('=========================');
     logger.green('Congratulations, completed successfully!');
     logger.green('=========================');
-    logger.log(`   ${chalk.yellow('modify')} src/routes/index.js`)
-    logger.log(`   ${chalk.yellow('modify')} src/common/components/layout-nav.vue`)
-    logger.log(`   ${chalk.yellow('modify')} src/app.vue`)
   }
 
 });
