@@ -19,7 +19,9 @@ var fs = require('fs');
 module.exports = yeoman.Base.extend({
 
   prompting() {
-    const moduleList = fs.readdirSync('src/modules')
+    const moduleList = 
+      fs.readdirSync('src/modules')
+      .concat(['GLOBAL'])
       .filter(item => item.indexOf('.') == -1)
       .map(item => ({
         name: item,
@@ -52,7 +54,11 @@ module.exports = yeoman.Base.extend({
       // 首字母大写驼峰
       this.props.firstCapCamelComponentName = s(this.props.camelName).capitalize().value(); // => DemoUser
       // 模块路径
-      this.props.modulePath = `./src/modules/${this.props.moduleName}`;
+      if(this.props.moduleName!='GLOBAL'){
+        this.props.modulePath = `./src/modules/${this.props.moduleName}`;
+      }else{
+        this.props.modulePath = `./src/common`;
+      }
     });
 
   },
@@ -77,24 +83,43 @@ module.exports = yeoman.Base.extend({
 
 
   updateCompIndex() {
-    var fullPath = `./src/modules/${this.props.moduleName}/comp-index.js`;
-
-    utils.rewriteFile({
-      fileRelativePath: fullPath,
-      insertPrev: true,
-      needle: `<!-- Don't touch me - import components-->`,
-      splicable: [
-        `import ${this.props.camelName} from './components/${this.props.midLineName}.vue';`,
-      ]
-    });
-    utils.rewriteFile({
-      fileRelativePath: fullPath,
-      insertPrev: true,
-      needle: `<!-- Don't touch me - export components-->`,
-      splicable: [
-        `'${this.props.moduleName}.components.${this.props.midLineName}': ${this.props.camelName},`,
-      ]
-    });
+    if(this.props.moduleName!='GLOBAL') {
+      var fullPath = `./src/modules/${this.props.moduleName}/comp-index.js`;
+      utils.rewriteFile({
+        fileRelativePath: fullPath,
+        insertPrev: true,
+        needle: `<!-- Don't touch me - import components-->`,
+        splicable: [
+          `import ${this.props.camelName} from './components/${this.props.midLineName}.vue';`,
+        ]
+      });
+      utils.rewriteFile({
+        fileRelativePath: fullPath,
+        insertPrev: true,
+        needle: `<!-- Don't touch me - export components-->`,
+        splicable: [
+          `'${this.props.moduleName}.components.${this.props.midLineName}': ${this.props.camelName},`,
+        ]
+      });
+    }else{
+      var fullPath = `./src/modules/comp-index.js`;
+      utils.rewriteFile({
+        fileRelativePath: fullPath,
+        insertPrev: true,
+        needle: `<!-- Don't touch me - import components-->`,
+        splicable: [
+          `import ${this.props.camelName} from 'common/components/${this.props.midLineName}.vue';`,
+        ]
+      });
+      utils.rewriteFile({
+        fileRelativePath: fullPath,
+        insertPrev: true,
+        needle: `<!-- Don't touch me - export components-->`,
+        splicable: [
+          `'${this.props.moduleName}.components.${this.props.midLineName}': ${this.props.camelName},`,
+        ]
+      });
+    }
   },
 
   usageTip() {
