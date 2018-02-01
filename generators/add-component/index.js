@@ -14,19 +14,21 @@ var fs = require('fs');
 /**
  * add-component 生成器行为：
  * 1. 在 src/modules 对应模块的 components 目录中添加页面文件 xx.vue
- * 2. 在 src/modules 对应模块的 comp-index.js 目录中添加组件
+ * （公共组件在scr/common/components中添加）
+ * 2. 在 src/modules 对应模块的 comp-index.js 目录中注册组件
+ * （公共组件在src/modules/comp-index.js中注册）
  */
 module.exports = yeoman.Base.extend({
 
   prompting() {
-    const moduleList = 
+    const moduleList =
       fs.readdirSync('src/modules')
-      .concat(['GLOBAL'])
-      .filter(item => item.indexOf('.') == -1)
-      .map(item => ({
-        name: item,
-        value: item
-      }));
+        .concat(['GLOBAL'])
+        .filter(item => item.indexOf('.') == -1)
+        .map(item => ({
+          name: item,
+          value: item
+        }));
 
     // 询问信息
     var prompts = [
@@ -54,9 +56,9 @@ module.exports = yeoman.Base.extend({
       // 首字母大写驼峰
       this.props.firstCapCamelComponentName = s(this.props.camelName).capitalize().value(); // => DemoUser
       // 模块路径
-      if(this.props.moduleName!='GLOBAL'){
+      if (this.props.moduleName != 'GLOBAL') {
         this.props.modulePath = `./src/modules/${this.props.moduleName}`;
-      }else{
+      } else {
         this.props.modulePath = `./src/common`;
       }
     });
@@ -83,7 +85,7 @@ module.exports = yeoman.Base.extend({
 
 
   updateCompIndex() {
-    if(this.props.moduleName!='GLOBAL') {
+    if (this.props.moduleName != 'GLOBAL') {
       var fullPath = `./src/modules/${this.props.moduleName}/comp-index.js`;
       utils.rewriteFile({
         fileRelativePath: fullPath,
@@ -101,7 +103,7 @@ module.exports = yeoman.Base.extend({
           `'${this.props.moduleName}.components.${this.props.midLineName}': ${this.props.camelName},`,
         ]
       });
-    }else{
+    } else {
       var fullPath = `./src/modules/comp-index.js`;
       utils.rewriteFile({
         fileRelativePath: fullPath,
