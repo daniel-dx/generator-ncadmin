@@ -19,14 +19,12 @@ var fs = require('fs');
 module.exports = yeoman.Base.extend({
 
   prompting() {
-    const moduleList = fs.readdirSync('src/modules').filter(function (item) {
-      return item.indexOf('.') == -1;
-    }).map(function (item) {
-      return {
+    const moduleList = fs.readdirSync('src/modules')
+      .filter(item => item.indexOf('.') == -1)
+      .map(item => ({
         name: item,
         value: item
-      }
-    })
+      }));
 
     // 询问信息
     var prompts = [

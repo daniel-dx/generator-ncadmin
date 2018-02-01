@@ -58,9 +58,9 @@ module.exports = yeoman.Base.extend({
       `./src/modules/${this.props.midLineName}/pages`,
       `./src/modules/${this.props.midLineName}/modals`
     ];
-    mkdirCommon.forEach(function (item) {
+    mkdirCommon.forEach(item => {
       fs.mkdirSync(item);
-      fs.appendFileSync(`${item}/README.md`,'');
+      fs.appendFileSync(`${item}/README.md`, '');
     })
   },
 
@@ -116,7 +116,7 @@ module.exports = yeoman.Base.extend({
 
   },
 
-  updateApp() {    
+  updateApp() {
     var fullPath = './src/app.vue';
 
     utils.rewriteFile({
