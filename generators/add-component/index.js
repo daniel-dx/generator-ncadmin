@@ -101,7 +101,6 @@ module.exports = yeoman.Base.extend({
     logger.green('=========================');
     logger.green('Congratulations, completed successfully!');
     logger.green('=========================');
-    logger.log(`   ${chalk.yellow('modify')} src/modules/${this.props.moduleName}/comp-index.js`);
   }
 
 });

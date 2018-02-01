@@ -16,6 +16,8 @@ var fs = require('fs');
  * 1. 在 src/modules 对应模块的 pages 目录中添加页面文件 xx.vue
  * 2. 更新路由 src/routes/index.js，添加对应页面路由
  * 3. 更新导航 src/common/components/layout-nav.vue，添加对应导航
+ * 
+ * 注：页面类型为list时，会在store中添加对应的value，供保存页面状态使用
  */
 module.exports = yeoman.Base.extend({
 

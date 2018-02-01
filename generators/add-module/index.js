@@ -15,10 +15,11 @@ var scrFolderPath, scrFolder;
 
 /**
  * add-page 生成器行为：
- * 1. 在 src/modules 中添加对应模块目录，包含 component/modals/pages 以及 comp-index.js
+ * 1. 在 src/modules 中添加对应模块目录，包含 component/modals/pages 以及 store/index.js comp-index.js
  * 2. 更新路由 src/routes/index.js，增加标识位
  * 3. 更新导航 src/common/components/layout-nav.vue，添加对应菜单及标识位
  * 4. 更新入口组件 src/app.vue，引入模块对应的comp-index.js
+ * 5. 更新src/store/index.js，添加对应模块的store
  */
 module.exports = yeoman.Base.extend({
 
