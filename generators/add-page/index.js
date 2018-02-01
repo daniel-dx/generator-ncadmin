@@ -101,7 +101,7 @@ module.exports = yeoman.Base.extend({
         insertPrev: true,
         needle: `<!-- Don't touch me - import state -->`,
         splicable: [
-          `${this.props.camelName}Value`
+          `${this.props.camelName}Value: {},`
         ]
       });
     }
@@ -111,24 +111,21 @@ module.exports = yeoman.Base.extend({
     var fullPath = './src/common/components/layout-nav.vue';
     
     if(this.props.pageType == 'edit' || this.props.pageType == 'detail' ){
-      var routeLink = `  link: "/${this.props.moduleName}/${this.props.midLineName}/100"`;
     }else{
       var routeLink = `  link: "/${this.props.moduleName}/${this.props.midLineName}"`;
+      utils.rewriteFile({
+        fileRelativePath: fullPath,
+        insertPrev: true,
+        needle: `<!-- Don't touch me - ${this.props.moduleName} pages -->`,
+        splicable: [
+          `{`,
+          `  icon: "",`,
+          `  name: "${this.props.firstCapCamelComponentName}",`,
+          routeLink,
+          `},`,
+        ]
+      });
     }
-
-
-    utils.rewriteFile({
-      fileRelativePath: fullPath,
-      insertPrev: true,
-      needle: `<!-- Don't touch me - ${this.props.moduleName} pages -->`,
-      splicable: [
-        `{`,
-        `  icon: "",`,
-        `  name: "${this.props.firstCapCamelComponentName}",`,
-        routeLink,
-        `},`,
-      ]
-    });
   },
 
   updateRoute() {
