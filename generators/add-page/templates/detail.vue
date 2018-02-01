@@ -11,17 +11,29 @@ export default {
   data() {
     return {
       config: {
-        // 填写配置，
-        // 规范: http://gitlab.tools.vipshop.com/daniel.xiao/admin-terminator/blob/master/view-detail-config.md
+        title: '', 
+        idField: 'id',
+        source: { 
+          apiUrl: '', 
+          params: [{ 
+            name: 'id',
+            value: 'dx: {{$id}}'
+          }],
+          resField: 'data'
+        },
+        detail: {
+          properties: [ 
+            // TODO 填写你的详情页配置信息
+          ]
+        }
       }
     };
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" rel="stylesheet/scss" scoped>
-.<%= midLineName %>{
+<style lang="scss">
+.<%=midLineName %> {
 
 }
 </style>

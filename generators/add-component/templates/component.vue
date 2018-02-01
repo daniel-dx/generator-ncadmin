@@ -1,31 +1,43 @@
 <template>
   <div class="<%= midLineName %>">
-    <%= midLineName %>
+    {{mergeConfig.demo}}
   </div>
 </template>
 
 <script>
+
+import ncadminCore from "ncadmin-core";
+
+const { widgetMixin } = ncadminCore;
+
 export default {
-  props: {
-    config: {
-      type: Object,
-      default: () => ({})
-    },
-    value: {
-      type: Object,
-      default: () => ({})
-    },
+
+  mixins: [widgetMixin],
+
+  /* ====================== 生命周期 ====================== */
+
+  created() {
+
   },
-  methods: {
-    sayHi() {
-      alert('hi, this is the demo component');
+
+  /* ====================== 数据绑定 ====================== */
+
+  data() {
+    return {
+      defaultConfig: {
+        demo: 'demo'
+      }
     }
+  },
+
+  /* ====================== 事件处理 ====================== */
+
+  methods: {
+
   }
 }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-.<%= midLineName %>{
-
-}
+<style lang="scss">
+.<%=midLineName %> {}
 </style>
