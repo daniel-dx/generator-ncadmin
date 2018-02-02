@@ -47,7 +47,7 @@ export default {
               handler: {
                 type: "ajax",
                 options: {
-                  apiUrl: '/api/deleteItem',
+                  apiUrl: '/api/demo/delete',
                   method: 'post',
                   params: [{
                     name: 'id',
@@ -75,7 +75,7 @@ export default {
         // 显示列表
         list: {
           datasource: {
-            apiUrl: '/api/getListData',
+            apiUrl: '/api/demo/list',
             method: 'get',
             paramFields: {
               pageSize: 'pageSize',
@@ -99,15 +99,17 @@ export default {
           // 数据列
           columns: [
             {
-              header: '列1',
+              header: '姓名',
               dataField: 'name',
             },
             {
-              header: '列2',
+              header: '头像',
               component: {
-                name: 'nca-label',
-                config: {},
-                value: 'dx: {{$item.address}}'
+                name: 'nca-image',
+                config: {
+                  maxWidth: '80px'
+                },
+                value: 'dx: {{$item.photo}}'
               }
             },
           ],
@@ -118,7 +120,7 @@ export default {
               handler: {
                 type: "ajax",
                 options: {
-                  apiUrl: '/api/deleteItem',
+                  apiUrl: '/api/demo/delete',
                   method: 'post',
                   params: [{
                     name: 'id',

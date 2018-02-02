@@ -1,17 +1,17 @@
 <template>
   <div class="<%= midLineName %>">
-      <nca-detail-modal-inside :modal-id="modalId" :config="configData" :value="value"></nca-detail-modal-inside>
+    <nca-detail-modal-inside :modal-id="modalId" :config="configData" :value="value"></nca-detail-modal-inside>
   </div>
 </template>
 
 <script>
 
-import ncAdminCore from 'ncadmin-core';
-const { modalInsideMixin } = ncAdminCore;
+import ncadminCore from 'ncadmin-core';
+const { modalInsideMixin } = ncadminCore;
 
 export default {
 
-  mixins: [modalInsideMixins],
+  mixins: [modalInsideMixin],
 
   /* ====================== 数据绑定 ====================== */
 
@@ -25,7 +25,19 @@ export default {
         },
         detail: {
           properties: [
-            // TODO: 这里配置你的详情信息
+            {
+              label: "姓名",
+              value: "dx: {{$root.name}}",
+              columns: 6
+            },
+            {
+              label: "头像",
+              value: "dx: {{$root.photo}}",
+              widget: "nca-image",
+              widgetConfig: {
+                maxWidth: '80px'
+              }
+            },
           ]
         }
       }

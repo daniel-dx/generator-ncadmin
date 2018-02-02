@@ -11,19 +11,31 @@ export default {
   data() {
     return {
       config: {
-        title: '', 
+        title: '查看详情',
         idField: 'id',
-        source: { 
-          apiUrl: '', 
-          params: [{ 
+        source: {
+          apiUrl: '/api/demo/detail',
+          params: [{
             name: 'id',
             value: 'dx: {{$id}}'
           }],
-          resField: 'data'
+          resField: ''
         },
         detail: {
-          properties: [ 
-            // TODO 填写你的详情页配置信息
+          properties: [
+            {
+              label: "姓名",
+              value: "dx: {{$root.name}}",
+              columns: 6
+            },
+            {
+              label: "头像",
+              value: "dx: {{$root.photo}}",
+              widget: "nca-image",
+              widgetConfig: {
+                maxWidth: '80px'
+              }
+            },
           ]
         }
       }
@@ -32,8 +44,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.<%=midLineName %> {
-
-}
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" rel="stylesheet/scss" scoped>
+.<%=midLineName %> {}
 </style>
