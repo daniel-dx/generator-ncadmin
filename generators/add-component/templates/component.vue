@@ -10,6 +10,9 @@ import ncadminCore from "ncadmin-core";
 
 const { widgetMixin } = ncadminCore;
 
+/**
+ * 可通过this.$emit('notify-submit')通知提交数据事件
+ */
 export default {
 
   mixins: [widgetMixin],
