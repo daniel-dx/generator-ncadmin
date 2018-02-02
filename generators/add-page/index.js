@@ -42,7 +42,7 @@ module.exports = yeoman.Base.extend({
         type: 'list',
         name: 'pageType',
         message: 'Chose the type of page.',
-        choices: ['empty','list','edit','detail'].map(item => ({
+        choices: ['empty', 'list', 'edit', 'detail'].map(item => ({
           name: item,
           value: item
         })),
@@ -64,7 +64,7 @@ module.exports = yeoman.Base.extend({
       this.props.camelName = s(this.props.midLineName).camelize().value();
       // 首字母大写驼峰
       this.props.firstCapCamelComponentName = s(this.props.camelName).capitalize().value(); // => DemoUser
-      
+
       // 驼峰模块名
       this.props.moduleCamelName = s(this.props.moduleName).camelize().value();
       // 模块路径
@@ -93,7 +93,7 @@ module.exports = yeoman.Base.extend({
   },
 
   updateStore() {
-    if(this.props.pageType == 'list'){
+    if (this.props.pageType == 'list') {
       var fullPath = `./src/modules/${this.props.moduleName}/store/index.js`;
 
       utils.rewriteFile({
@@ -109,9 +109,9 @@ module.exports = yeoman.Base.extend({
 
   updateNav() {
     var fullPath = './src/common/components/layout-nav.vue';
-    
-    if(this.props.pageType == 'edit' || this.props.pageType == 'detail' ){
-    }else{
+
+    if (this.props.pageType == 'edit' || this.props.pageType == 'detail') {
+    } else {
       var routeLink = `  link: "/${this.props.moduleName}/${this.props.midLineName}"`;
       utils.rewriteFile({
         fileRelativePath: fullPath,
@@ -143,9 +143,9 @@ module.exports = yeoman.Base.extend({
       ]
     });
 
-    if(this.props.pageType == 'edit' || this.props.pageType == 'detail' ){
+    if (this.props.pageType == 'edit' || this.props.pageType == 'detail') {
       var routeContent = `{ path: '/${this.props.moduleName}/${this.props.midLineName}/:id', component: ${camelModulePage}, name: '${midLineModulePage}' },`;
-    }else{
+    } else {
       var routeContent = `{ path: '/${this.props.moduleName}/${this.props.midLineName}', component: ${camelModulePage}, name: '${midLineModulePage}' },`
     }
 
@@ -162,9 +162,10 @@ module.exports = yeoman.Base.extend({
   usageTip() {
     logger.green('=========================');
     logger.green('Congratulations, completed successfully!');
+    if (this.props.pageType == 'edit' || this.props.pageType == 'detail') {
+      logger.yellow(`Your page's route: http://localhost:8081/#/${this.props.moduleName}/${this.props.midLineName}/100`);
+    }
     logger.green('=========================');
-    logger.log(`   ${chalk.yellow('modify')} src/routes/index.js`);
-    logger.log(`   ${chalk.yellow('modify')} src/common/components/layout-nav.vue`);
   }
 
 });

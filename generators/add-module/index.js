@@ -80,6 +80,13 @@ module.exports = yeoman.Base.extend({
     );
   },
 
+  copyMock() {
+    return this.fs.copyTpl(
+      this.templatePath('mock.js'),
+      this.destinationPath(`mock/${this.props.midLineName}.js`)
+    );
+  },
+
   updateStore() {
     var fullPath = './src/store/index.js';
 
