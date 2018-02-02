@@ -25,7 +25,8 @@ export default {
               keyword: {
                 type: 'string',
                 ui: {
-                  label: '关键字'
+                  label: '关键字',
+                  columns: 3
                 }
               }
             },
@@ -44,6 +45,16 @@ export default {
           batchActions: {
             delete: {
               handler: {
+                type: "ajax",
+                options: {
+                  apiUrl: '/api/demo/delete',
+                  method: 'post',
+                  params: [{
+                    name: 'id',
+                    value: 'dx: {{$selected[e].id}}'
+                  }],
+                },
+                refresh: 'current'
               }
             },
             others: [
@@ -64,7 +75,7 @@ export default {
         // 显示列表
         list: {
           datasource: {
-            apiUrl: '',
+            apiUrl: '/api/demo/list',
             method: 'get',
             paramFields: {
               pageSize: 'pageSize',
@@ -74,8 +85,8 @@ export default {
             otherParams: {
             },
             resField: {
-              pageingTotal: '',
-              list: ''
+              pageingTotal: 'page.total',
+              list: 'data'
             },
           },
 
@@ -88,15 +99,17 @@ export default {
           // 数据列
           columns: [
             {
-              header: '列1',
-              dataField: 'field1',
+              header: '姓名',
+              dataField: 'name',
             },
             {
-              header: '列2',
+              header: '头像',
               component: {
-                name: 'nca-label',
-                config: {},
-                value: '列2的值'
+                name: 'nca-image',
+                config: {
+                  maxWidth: '80px'
+                },
+                value: 'dx: {{$item.photo}}'
               }
             },
           ],
@@ -107,7 +120,7 @@ export default {
               handler: {
                 type: "ajax",
                 options: {
-                  apiUrl: '',
+                  apiUrl: '/api/demo/delete',
                   method: 'post',
                   params: [{
                     name: 'id',

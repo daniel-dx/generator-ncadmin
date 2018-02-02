@@ -16,10 +16,10 @@ export default {
   data() {
     return {
       config: {
-        title: '',
+        title: '标题',
         idField: 'id',
         formData: {
-          apiUrl: '',
+          apiUrl: '/api/demo/detail',
           params: [
             {
               name: 'id',
@@ -29,14 +29,43 @@ export default {
           resField: ''
         },
         formSchema: {
-          type: 'object',
+          type: "object",
           properties: {
-            // TODO 请在这里填写表单配置
+            id: {
+              type: "number",
+              ui: {
+                hidden: true
+              }
+            },
+            name: {
+              type: "string",
+              ui: {
+                label: "姓名"
+              }
+            },
+            photo: {
+              type: "string",
+              ui: {
+                label: "头像",
+                preview: {
+                  type: 'image'
+                },
+                widgetConfig: {
+                  type: 'file',
+                  upload: {
+                    uploadUrl: "http://houyi-api-admin.vip.vip.com/adminII.php/Pic/upLoadPic",
+                    resField: "data.data.url",
+                    fileField: "pic",
+                    accept: ".jpg"
+                  }
+                }
+              }
+            }
           }
         },
         buttons: {
           submit: { // 提交
-            apiUrl: '', // 提交的Url
+            apiUrl: '/api/demo/save', // 提交的Url
             valueField: '', // 当为空时，即表单的每个一级字段即为参数名
           }
         }
@@ -46,6 +75,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" rel="stylesheet/scss" scoped>
 .<%=midLineName %> {}
 </style>

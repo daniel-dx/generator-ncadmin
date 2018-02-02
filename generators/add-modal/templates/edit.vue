@@ -6,12 +6,12 @@
 
 <script>
 
-import ncAdminCore from 'ncadmin-core';
-const { modalInsideMixin } = ncAdminCore;
+import ncadminCore from 'ncadmin-core';
+const { modalInsideMixin } = ncadminCore;
 
 export default {
 
-  mixins: [modalInsideMixins],
+  mixins: [modalInsideMixin],
 
   /* ====================== 数据绑定 ====================== */
 
@@ -24,11 +24,43 @@ export default {
           isRemote: false,
         },
         formSchema: {
-          // TODO 配置你的表单
+          type: "object",
+          properties: {
+            id: {
+              type: "number",
+              ui: {
+                hidden: true
+              }
+            },
+            name: {
+              type: "string",
+              ui: {
+                label: "姓名"
+              }
+            },
+            photo: {
+              type: "string",
+              ui: {
+                label: "头像",
+                preview: {
+                  type: 'image'
+                },
+                widgetConfig: {
+                  type: 'file',
+                  upload: {
+                    uploadUrl: "http://houyi-api-admin.vip.vip.com/adminII.php/Pic/upLoadPic",
+                    resField: "data.data.url",
+                    fileField: "pic",
+                    accept: ".jpg"
+                  }
+                }
+              }
+            }
+          }
         },
         buttons: {
           submit: {
-            apiUrl: '',
+            apiUrl: '/api/demo/save',
             valueField: ''
           }
         }

@@ -6,12 +6,12 @@
 
 <script>
 
-import ncAdminCore from 'ncadmin-core';
-const { modalInsideMixin } = ncAdminCore;
+import ncadminCore from 'ncadmin-core';
+const { modalInsideMixin } = ncadminCore;
 
 export default {
 
-  mixins: [modalInsideMixins],
+  mixins: [modalInsideMixin],
 
   /* ====================== 数据绑定 ====================== */
 
