@@ -119,7 +119,7 @@ module.exports = yeoman.Base.extend({
         needle: `<!-- Don't touch me - ${this.props.moduleName} pages -->`,
         splicable: [
           `{`,
-          `  icon: "",`,
+          `  icon: "el-icon-document",`,
           `  name: "${this.props.firstCapCamelComponentName}",`,
           routeLink,
           `},`,
