@@ -1,19 +1,19 @@
-# generator-ncadmin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# generator-nca [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > ncadmin generator
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-ncadmin using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-nca using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo
-npm install -g generator-ncadmin
+npm install -g generator-nca
 ```
 
 Then generate your new project:
 
 ```bash
-yo ncadmin
+yo nca
 ```
 
 ## Getting To Know Yeoman
@@ -28,9 +28,9 @@ yo ncadmin
 MIT © [daniel]()
 
 
-[npm-image]: https://badge.fury.io/js/generator-ncadmin.svg
-[npm-url]: https://npmjs.org/package/generator-ncadmin
-[travis-image]: https://travis-ci.org//generator-ncadmin.svg?branch=master
-[travis-url]: https://travis-ci.org//generator-ncadmin
-[daviddm-image]: https://david-dm.org//generator-ncadmin.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org//generator-ncadmin
+[npm-image]: https://badge.fury.io/js/generator-nca.svg
+[npm-url]: https://npmjs.org/package/generator-nca
+[travis-image]: https://travis-ci.org//generator-nca.svg?branch=master
+[travis-url]: https://travis-ci.org//generator-nca
+[daviddm-image]: https://david-dm.org//generator-nca.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org//generator-nca

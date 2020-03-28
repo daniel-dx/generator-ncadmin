@@ -1,7 +1,10 @@
 {
-  "name": "generator-ncadmin",
-  "version": "0.0.2",
+  "name": "generator-nca",
+  "version": "0.1.0",
   "description": "ncadmin generator",
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "",
   "author": {
     "name": "daniel",

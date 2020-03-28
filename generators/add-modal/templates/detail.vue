@@ -6,7 +6,7 @@
 
 <script>
 
-import ncadminCore from 'ncadmin-core';
+import ncadminCore from '@danieldx/ncadmin-core';
 const { modalInsideMixin } = ncadminCore;
 
 export default {
