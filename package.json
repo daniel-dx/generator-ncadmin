@@ -1,6 +1,6 @@
 {
   "name": "generator-ncadmin",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "ncadmin generator",
   "homepage": "",
   "author": {
@@ -47,7 +47,6 @@
   },
   "repository": "/generator-ncadmin",
   "scripts": {
-    "prepublish": "gulp prepublish",
     "test": "gulp"
   },
   "license": "MIT"
